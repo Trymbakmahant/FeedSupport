@@ -6,6 +6,7 @@ import { useGSAP } from "@gsap/react";
 import { useRouter } from "next/navigation";
 import { ScrollToPlugin } from "gsap/ScrollToPlugin";
 import { X } from "lucide-react";
+import ThemeToggle from "./ThemeToggle";
 gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 const Navbar: React.FC = () => {
   const router = useRouter();
@@ -138,6 +139,7 @@ const Navbar: React.FC = () => {
             <path d="M11 28L31 28" stroke="#FAFAFA" strokeWidth="2"></path>
           </svg>
         </button>
+        <ThemeToggle />
       </div>
     </div>
   );
