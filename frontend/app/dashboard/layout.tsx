@@ -1,5 +1,5 @@
 import Sidebar from "@/components/Sidebar/Sidebar";
-
+import { ScrollArea } from "@/components/ui/scroll-area";
 export default function ProjectLayout({
   children,
 }: {

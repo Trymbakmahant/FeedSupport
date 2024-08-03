@@ -2,6 +2,7 @@ import React, { useContext, createContext, useState, ReactNode } from "react";
 import { MoreVertical, ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import ThemeToggle from "../ThemeToggle";
 
 interface SidebarContextProps {
   expanded: boolean;
@@ -40,18 +41,20 @@ export default function Sidebars({ children }: SidebarProps) {
         <SidebarContext.Provider value={{ expanded }}>
           <ul className="flex-1 px-3">{children}</ul>
         </SidebarContext.Provider>
-
-        <div
-          onClick={() => {
-            router.push("/");
-          }}
-          className="flex cursor-pointer border-t p-3"
-        >
+        <div className="flex my-4 items-center justify-center">
+          {" "}
+          <ThemeToggle toggleSize={`${expanded ? "10px" : "20px"}`} />
+        </div>
+        <div className="flex justify-center"></div>
+        <div className="flex justify-end duration-200"></div>
+        <div className="flex cursor-pointer border-t p-3">
           <div className="flex items-center rounded-lg bg-blue-100 px-2">
-            {" "}
             <span className="text-xl font-semibold">JD</span>
           </div>
           <div
+            onClick={() => {
+              router.push("/");
+            }}
             className={`
                flex items-center justify-between
               overflow-hidden transition-all ${
@@ -61,9 +64,7 @@ export default function Sidebars({ children }: SidebarProps) {
           >
             <div className="leading-4">
               <h4 className="font-semibold">John Doe</h4>
-              <span className="text-xs text-gray-600">johndoe@gmail.com</span>
             </div>
-            <MoreVertical size={20} />
           </div>
         </div>
       </nav>

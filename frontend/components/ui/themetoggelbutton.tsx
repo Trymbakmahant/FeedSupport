@@ -1,43 +1,10 @@
-"use client";
 import React from "react";
-import { useState, useEffect } from "react";
+import style from "./ThemeToggelButton.module.css";
 
-import style from "./ui/ThemeToggelButton.module.css";
-interface ThemeToggelButtonProps {
-  toggleSize?: string;
-}
-const ThemeToggelButton: React.FC<ThemeToggelButtonProps> = ({
-  toggleSize = "15px",
-}) => {
-  const [darkMode, setDarkMode] = useState(true);
-  const customStyle = {
-    "--toggle-size": toggleSize,
-  } as React.CSSProperties;
-  useEffect(() => {
-    const theme = localStorage.getItem("theme");
-    if (theme === "dark") {
-      setDarkMode(true);
-    }
-  }, []);
-
-  useEffect(() => {
-    if (darkMode) {
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("theme", "dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-      localStorage.setItem("theme", "light");
-    }
-  }, [darkMode]);
+const ThemeToggelButton = () => {
   return (
-    <label style={customStyle} className={style["theme-switch"]}>
-      <input
-        onChange={() => {
-          setDarkMode((prev) => !prev);
-        }}
-        type="checkbox"
-        className={style["theme-switch__checkbox"]}
-      />
+    <label className={style["theme-switch"]}>
+      <input type="checkbox" className={style["theme-switch__checkbox"]} />
       <div className={style["theme-switch__container"]}>
         <div className={style["theme-switch__clouds"]} />
         <div className={style["theme-switch__stars-container"]}>
