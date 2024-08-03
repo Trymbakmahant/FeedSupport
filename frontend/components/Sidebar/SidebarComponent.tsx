@@ -21,7 +21,7 @@ export default function Sidebars({ children }: SidebarProps) {
   const router = useRouter();
   return (
     <aside className=" h-screen">
-      <nav className="flex h-full w-fit flex-col border-r bg-secondary shadow-sm">
+      <nav className="flex h-full w-fit flex-col border-r border-gray-500 bg-secondary shadow-sm">
         <div className="flex items-center justify-between p-4 pb-2">
           <span
             className={`${
@@ -32,7 +32,7 @@ export default function Sidebars({ children }: SidebarProps) {
           </span>
           <button
             onClick={() => setExpanded((curr) => !curr)}
-            className="rounded-lg bg-gray-50 p-1.5 hover:bg-gray-100"
+            className="rounded-lg  p-1.5"
           >
             {!expanded ? <ChevronLeft /> : <ChevronRight />}
           </button>
