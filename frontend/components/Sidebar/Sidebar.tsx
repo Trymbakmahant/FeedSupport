@@ -1,6 +1,12 @@
 "use client";
 import React, { useState } from "react";
-import { HandCoins, Heart, NotebookPen } from "lucide-react";
+import {
+  ChartSpline,
+  HandCoins,
+  Heart,
+  LayoutDashboard,
+  NotebookPen,
+} from "lucide-react";
 import Sidebars, { SidebarItem } from "./SidebarComponent";
 import { useRouter } from "next/navigation";
 
@@ -23,28 +29,44 @@ const Sidebar = () => {
     <main className="min-w-[50px]">
       <Sidebars>
         <SidebarItem
-          icon={<HandCoins size={20} />}
-          active={tab.activeTab === "create/supportform"}
+          icon={<LayoutDashboard size={20} />}
+          active={tab.activeTab === "/dashboard"}
           handleOnclick={() => {
-            handleOnclickTab("create/supportform");
+            handleOnclickTab("/dashboard");
+          }}
+          text="Dashboard"
+        />
+        <SidebarItem
+          icon={<HandCoins size={20} />}
+          active={tab.activeTab === "/dashboard/supportform"}
+          handleOnclick={() => {
+            handleOnclickTab("/dashboard/supportform");
           }}
           text="Support Card"
         />
 
         <SidebarItem
-          active={tab.activeTab === "create/feedbackform"}
+          active={tab.activeTab === "/dashboard/feedbackform"}
           icon={<NotebookPen size={20} />}
           text="Feedback Form"
           handleOnclick={() => {
-            handleOnclickTab("create/feedbackform");
+            handleOnclickTab("/dashboard/feedbackform");
           }}
         />
         <SidebarItem
-          active={tab.activeTab === "dashboard/liked"}
+          active={tab.activeTab === "/dashboard/liked"}
           icon={<Heart size={20} />}
           text="Liked"
           handleOnclick={() => {
-            handleOnclickTab("dashboard/liked");
+            handleOnclickTab("/dashboard/liked");
+          }}
+        />
+        <SidebarItem
+          active={tab.activeTab === "/dashboard/analitics"}
+          icon={<ChartSpline size={20} />}
+          text="Analitcs"
+          handleOnclick={() => {
+            handleOnclickTab("/dashboard/analitics");
           }}
         />
       </Sidebars>

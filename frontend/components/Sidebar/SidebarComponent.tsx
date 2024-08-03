@@ -47,7 +47,7 @@ export default function Sidebars({ children }: SidebarProps) {
         </div>
         <div className="flex justify-center"></div>
         <div className="flex justify-end duration-200"></div>
-        <div className="flex cursor-pointer border-t p-3">
+        {/* <div className="flex cursor-pointer border-t p-3">
           <div className="flex items-center rounded-lg bg-blue-100 px-2">
             <span className="text-xl font-semibold">JD</span>
           </div>
@@ -66,7 +66,7 @@ export default function Sidebars({ children }: SidebarProps) {
               <h4 className="font-semibold">John Doe</h4>
             </div>
           </div>
-        </div>
+        </div> */}
       </nav>
     </aside>
   );

@@ -8,48 +8,47 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { spawn } from "child_process";
 
 const Products = [
   {
     Product: "INV001",
-    rating: 4.5,
+    totalFeedback: 4.5,
     tags: ["video", "image"],
     time: "2024-08-03",
   },
   {
     Product: "INV002",
-    rating: 3.5,
+    totalFeedback: 3.5,
     tags: ["text"],
     time: "2024-08-03",
   },
   {
     Product: "INV003",
-    rating: 4.9,
+    totalFeedback: 4.9,
     tags: ["text", "video", "image"],
     time: "2024-08-03",
   },
   {
     Product: "INV004",
-    rating: 2.3,
+    totalFeedback: 2.3,
     tags: ["text", "video"],
     time: "2024-08-03",
   },
   {
     Product: "INV005",
-    rating: 2.3,
+    totalFeedback: 2.3,
     tags: ["text", "video", "image"],
     time: "2024-08-03",
   },
   {
     Product: "INV006",
-    rating: 3.5,
+    totalFeedback: 3.5,
     tags: ["text", "image"],
     time: "2024-08-03",
   },
   {
     Product: "INV007",
-    rating: 4.9,
+    totalFeedback: 4.9,
     tags: ["text", "video", "image"],
     time: "2024-08-03",
   },
@@ -61,22 +60,17 @@ export function FormList() {
       <TableCaption>A list of your recent Feedback</TableCaption>
       <TableHeader>
         <TableRow>
-          <TableHead className="w-[100px]">Product</TableHead>
-          <TableHead>Rating</TableHead>
+          <TableHead className="w-[200px]">Products Name</TableHead>
+          <TableHead>No. Of Feedbacks</TableHead>
           <TableHead>Tags</TableHead>
-          <TableHead className="text-right">Time</TableHead>
+          <TableHead className="text-right">Creation Time</TableHead>
         </TableRow>
       </TableHeader>
       <TableBody>
         {Products.map((Product) => (
-          <TableRow
-            key={Product.Product}
-            className={`${Product.rating < 2.5 && "bg-red-200"} ${
-              Product.rating > 2.5 && Product.rating < 4 && "bg-orange-200"
-            } ${Product.rating > 4 && "bg-green-200"} text-black`}
-          >
+          <TableRow key={Product.Product}>
             <TableCell className="font-medium">{Product.Product}</TableCell>
-            <TableCell>{Product.rating}</TableCell>
+            <TableCell>{Product.totalFeedback}</TableCell>
             <TableCell>
               <Tags tags={Product.tags} />
             </TableCell>

@@ -8,7 +8,7 @@ import {
   CheckCircle,
   CircleArrowOutUpRight,
 } from "lucide-react";
-import { FormList } from "@/components/Dashboard/FormsList";
+import { FeedbackList } from "@/components/Dashboard/FeedbackList";
 import { RecentSupports } from "@/components/Dashboard/RecentSupports";
 import { Button } from "@/components/ui/button";
 const page = () => {
@@ -63,8 +63,8 @@ const page = () => {
                   Medium (2.6 - 3.9)
                 </h3>
                 <p>
-                  This rating range signifies average performance. There's room
-                  for improvement.
+                  This rating range signifies average performance. {`There's`}{" "}
+                  room for improvement.
                 </p>
               </div>
             </div>
@@ -91,7 +91,7 @@ const page = () => {
               Recent Feedbacks <CircleArrowOutUpRight />{" "}
             </Button>
             <Separator className=" bg-primary" />
-            <FormList />
+            <FeedbackList />
           </div>
           <Separator orientation="vertical" className=" bg-primary" />
           <div className="flex flex-col gap-4 items-center my-3  ">
