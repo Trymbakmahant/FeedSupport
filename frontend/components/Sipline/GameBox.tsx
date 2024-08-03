@@ -1,9 +1,16 @@
-import Spline from "@splinetool/react-spline/next";
+import Spline from "@splinetool/react-spline";
 
 export default function GameBox() {
   return (
-    <main className="w-screen h-screen z-10  fixed top-0 left-0">
-      <Spline scene="https://prod.spline.design/tpogw5wCFCHfvi4z/scene.splinecode" />
+    <main className="h-screen bg-blue-200 w-[50vw]">
+      <Spline
+        onLoad={() => {
+          console.log("hello");
+        }}
+        scene="https://prod.spline.design/tpogw5wCFCHfvi4z/scene.splinecode"
+      />
     </main>
   );
 }
+
+//
