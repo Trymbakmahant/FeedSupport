@@ -81,7 +81,6 @@ const Navbar: React.FC = () => {
               Login
             </h3>
           </div>
-
           <div
             onClick={() => {
               router.push("/auth/signup");
@@ -90,6 +89,16 @@ const Navbar: React.FC = () => {
           >
             <h3 className="md:text-5xl text-3xl  translate-y-[130%]  navoption">
               Signup
+            </h3>
+          </div>{" "}
+          <div
+            onClick={() => {
+              router.push("/dashboard");
+            }}
+            className=" hover:text-purple-500 h-16 overflow-hidden  text-center w-full  cursor-pointer "
+          >
+            <h3 className="md:text-5xl text-3xl  translate-y-[130%]  navoption">
+              Dashboard
             </h3>
           </div>
         </div>

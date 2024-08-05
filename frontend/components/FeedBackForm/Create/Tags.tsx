@@ -5,3 +5,5 @@ const Tags = () => {
 };
 
 export default Tags;
+
+// let make it like multiple select option
