@@ -21,20 +21,37 @@ const formSchema = z.object({
     message: "UserName must be at least 2 characters.",
   }),
 });
-const FeedbackForm = () => {
+interface IFormInputs {
+  tags: string[];
+  title: string;
+  rating: boolean;
+  questions: string[];
+  name: string;
+}
+const FeedbackForm = ({
+  tags,
+  title,
+  name,
+  rating,
+  questions,
+}: IFormInputs) => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       UserName: "",
     },
   });
+
   function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
 
     console.log(values);
   }
   return (
-    <div className="flex justify-between w-full ">
+    <div className="px-11 py-14   rounded-2xl bg-secondary">
+      <span className="text-2xl">
+        Give Feedback on {name == "" ? "Product Name" : name}
+      </span>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4  ">
           <FormField
