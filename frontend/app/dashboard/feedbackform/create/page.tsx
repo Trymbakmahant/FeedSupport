@@ -34,9 +34,14 @@ const CreationFormSchema = z.object({
   questions: z.array(z.string()).refine((value) => value.some((item) => item), {
     message: "You have to add at least one question.",
   }),
-  name: z.string().max(30, {
-    message: "Name must be under 30 characters long",
-  }),
+  name: z
+    .string()
+    .max(30, {
+      message: "Name must be under 30 characters long",
+    })
+    .min(2, {
+      message: "Title must be at least 2 characters long.",
+    }),
 });
 
 interface IFormInputs {
@@ -284,10 +289,14 @@ const CreateFeedback = () => {
                 <div className="w-[400px] gap-3 flex items-center justify-center  h-[300px] bg-black rounded-2xl">
                   {getValues("tags").map((item, index) => {
                     if (item == "video") {
-                      return <FaVideo key={index} size={40} />;
+                      return (
+                        <FaVideo key={index} size={40} className="text-white" />
+                      );
                     }
                     if (item == "image") {
-                      return <FaImage key={index} size={40} />;
+                      return (
+                        <FaImage className="text-white" key={index} size={40} />
+                      );
                     }
                   })}
                 </div>
