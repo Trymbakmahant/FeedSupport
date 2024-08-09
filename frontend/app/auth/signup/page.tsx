@@ -3,7 +3,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
-
+import { showToast } from "@/helper/toasthelper";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -19,27 +19,51 @@ import Image from "next/image";
 import SignupImage from "@/public/Singpsecond.svg";
 import React from "react";
 import WorldIDWidget from "@/components/Worldcoin/WorldIDWidget";
+import { Textarea } from "@/components/ui/textarea";
+import { usePostData } from "@/hooks/usePostData";
+import LoadingDots from "@/components/ui/loadingDots";
+import { useRouter } from "next/navigation";
+import { useBusinessInfoStore } from "@/hooks/Zustand";
 
 const formSchema = z.object({
-  BussinessName: z.string().min(2, {
-    message: "BussinessName must be at least 2 characters.",
+  username: z.string().min(2, {
+    message: "username must be at least 2 characters.",
   }),
   description: z.string().min(100, {
     message: "Description must be at least 100 characters.",
   }),
+  email: z.string().email({ message: "invalid email address" }),
 });
+
 const Page = () => {
+  const { setBusinessInfo, updateBusinessInfo } = useBusinessInfoStore();
+  const router = useRouter();
+  const { loading, error, success, postData } = usePostData();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      BussinessName: "",
+      username: "",
       description: "",
+      email: "",
     },
   });
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
 
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    const respons: any = await postData("/api/bussinessRegistration", values);
+    console.log(respons);
+    if (respons.status == 200) {
+      console.log(respons);
+      updateBusinessInfo({
+        username: respons.user.username,
+        id: respons.user._id,
+        description: respons.user.description,
+        email: respons.user.email,
+      });
+      showToast("success", <p> Registration Completed </p>);
+      router.push("/dashboard");
+    } else {
+      showToast("error", <p> {respons.error} </p>);
+    }
   }
   return (
     <div className="flex justify-between h-screen overflow-hidden ">
@@ -58,20 +82,42 @@ const Page = () => {
             >
               <FormField
                 control={form.control}
-                name="BussinessName"
+                name="email"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>BussinessName</FormLabel>
+                    <FormLabel className="text-black">Email</FormLabel>
                     <FormControl>
-                      <Input placeholder="shadcn" {...field} />
+                      <Input
+                        className="bg-primary-foreground"
+                        placeholder="Enter You mail"
+                        {...field}
+                      />
+                    </FormControl>
+
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <FormField
+                control={form.control}
+                name="username"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel className="text-black">username</FormLabel>
+                    <FormControl>
+                      <Input
+                        className="bg-primary-foreground"
+                        placeholder="name of you buissiness"
+                        {...field}
+                      />
                     </FormControl>
                     <FormDescription>
-                      This is your public display name.
+                      This is your public display name of you buissiness.
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
                 )}
-              />{" "}
+              />
               <FormField
                 control={form.control}
                 name="description"
@@ -79,7 +125,11 @@ const Page = () => {
                   <FormItem>
                     <FormLabel>Description</FormLabel>
                     <FormControl>
-                      <Input placeholder="shadcn" {...field} />
+                      <Textarea
+                        className="bg-primary-foreground"
+                        placeholder="description of you buissiness"
+                        {...field}
+                      />
                     </FormControl>
                     <FormDescription>
                       write about your product or what you do.
@@ -89,9 +139,10 @@ const Page = () => {
                 )}
               />
               <div className="flex gap-3">
-                <Button>Connect wallet</Button>
                 <WorldIDWidget />
-                <Button type="submit">Submit</Button>
+                <Button type="submit" className="w-[100px]">
+                  {loading ? <LoadingDots size={7} /> : "Submit"}
+                </Button>
               </div>
             </form>
           </Form>

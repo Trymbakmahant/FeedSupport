@@ -29,9 +29,17 @@
     --chart-3: 197 37% 24%;
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
+    --dot-color-light: #b3d4fc; /* Light mode dot color */
+    --dot-color-dark: #4caf50; /* Dark mode dot color */
+    --dot-shadow-light: rgba(178, 212, 252, 0.7); /* Light mode shadow color */
+    --dot-shadow-dark: rgba(76, 175, 80, 0.7); /* Dark mode shadow color */
   }
 
   .dark {
+    --dot-color-light: #4caf50; /* Dark mode dot color */
+    --dot-color-dark: #000000; /* Dark mode background color */
+    --dot-shadow-light: rgba(76, 175, 80, 0.7); /* Dark mode shadow color */
+    --dot-shadow-dark: rgba(0, 0, 0, 0.7); /* Dark mode shadow color */
     --background: 20 14.3% 4.1%;
     --foreground: 0 0% 95%;
     --card: 24 9.8% 10%;

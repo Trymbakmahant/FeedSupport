@@ -22,17 +22,13 @@ const WorldIDWidget = () => {
     //   throw new Error("Verification failed."); // IDKit will display the error message to the user in the modal
     // }
   };
-  const onSuccess = () => {
-    // This is where you should perform any actions after the modal is closed
-    // Such as redirecting the user to a new page
-    window.location.href = "/success";
-  };
+  const onSuccess = () => {};
   const stingvar = "sdjofsjd";
   return (
     <div className="">
       <IDKitWidget
         app_id={`app_${process.env.NEXT_PUBLIC_WORLD_ID_API}`} // obtained from the Developer Portal
-        action="your action id" // obtained from the Developer Portal
+        action={`${process.env.NEXT_PUBLIC_World_ID_ACTION}`} // obtained from the Developer Portal
         onSuccess={onSuccess} // callback when the modal is closed
         handleVerify={handleVerify} // callback when the proof is received
         verification_level={VerificationLevel.Orb}

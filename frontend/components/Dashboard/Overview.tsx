@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import {
   HandCoins,
@@ -7,7 +8,11 @@ import {
 } from "lucide-react";
 import CircularProgressBar from "../ui/circularProgressBar";
 import { Button } from "../ui/button";
+import { useRouter } from "next/navigation";
+import { useCount, useBusinessInfoStore } from "@/hooks/Zustand";
 const Overview = () => {
+  const router = useRouter();
+  const { bussinessInfo } = useBusinessInfoStore();
   return (
     <div className="w-full flex flex-col gap-5 h-full">
       <span className="text-4xl px-11">Overview</span>
@@ -18,12 +23,17 @@ const Overview = () => {
               <NotebookPen /> Feedback Form
             </span>
             <div className="flex flex-col gap-2">
-              <span className="text-primary px-7"> 30 Total count </span>
+              <span className="text-primary px-7">
+                {bussinessInfo.username} Total count{" "}
+              </span>
               <span className="text-primary px-7">150 Total user respons </span>
             </div>
             <Button
               className="w-fit  px-7 mt-3 animate-slow-pulse  text-base "
               variant="ghost"
+              onClick={() => {
+                router.push("/dashboard/feedbackform/create");
+              }}
             >
               create new <ChevronRight />
             </Button>
@@ -50,6 +60,9 @@ const Overview = () => {
             <Button
               className="w-fit px-7 mt-3  animate-slow-pulse  text-base "
               variant="ghost"
+              onClick={() => {
+                router.push("/dashboard/feedbackform/create");
+              }}
             >
               create new <ChevronRight />
             </Button>

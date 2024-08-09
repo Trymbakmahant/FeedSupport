@@ -7,9 +7,9 @@ const BussinessSchema = new mongoose.Schema(
       require: [true, "plase provide a username "],
       unique: true,
     },
-    address: {
+    email: {
       type: String,
-      require: [true, "plase provide a address "],
+      require: [true, "plase provide a email "],
       unique: true,
     },
     description: {
@@ -17,11 +17,9 @@ const BussinessSchema = new mongoose.Schema(
       require: [true, "plase provide a description "],
       unique: true,
     },
-    pfp: {
-      type: String,
-      require: [true, "plase provide a pfp "],
-      unique: true,
-    },
+
+    verifyToken: String,
+    verifyTokenExpiry: Date,
   },
   {
     timestamps: true,
