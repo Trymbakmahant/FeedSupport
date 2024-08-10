@@ -24,6 +24,9 @@ import { usePostData } from "@/hooks/usePostData";
 import LoadingDots from "@/components/ui/loadingDots";
 import { useRouter } from "next/navigation";
 import { useBusinessInfoStore } from "@/hooks/Zustand";
+import { useAccount } from "wagmi";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+import { Label } from "@radix-ui/react-label";
 
 const formSchema = z.object({
   username: z.string().min(2, {
@@ -33,11 +36,15 @@ const formSchema = z.object({
     message: "Description must be at least 100 characters.",
   }),
   email: z.string().email({ message: "invalid email address" }),
+  address: z
+    .string()
+    .min(42, { message: "invalid wallet address" })
+    .max(42, { message: "invalid wallet address" }),
 });
 
 const Page = () => {
   const { setBusinessInfo, updateBusinessInfo } = useBusinessInfoStore();
-
+  const { isConnected, address } = useAccount();
   const router = useRouter();
   const { loading, error, success, postData } = usePostData();
   const form = useForm<z.infer<typeof formSchema>>({
@@ -46,6 +53,7 @@ const Page = () => {
       username: "",
       description: "",
       email: "",
+      address: address!,
     },
     mode: "onChange",
   });
@@ -65,6 +73,7 @@ const Page = () => {
         id: respons.user._id,
         description: respons.user.description,
         email: respons.user.email,
+        address: respons.user.address,
       });
       showToast("success", <p> Registration Completed </p>);
       router.push("/dashboard");
@@ -145,20 +154,28 @@ const Page = () => {
                   </FormItem>
                 )}
               />
-              <div className="flex gap-3">
-                <WorldIDWidget
-                  action="login"
-                  signal="Help us "
-                  active={!isValid || isSubmitting}
-                />
-                <Button
-                  disabled={!isValid || isSubmitting}
-                  type="submit"
-                  className="w-[100px]"
-                >
-                  {loading ? <LoadingDots size={7} /> : "Submit"}
-                </Button>
-              </div>
+              <div className="flex flex-col gap-1">
+                <Label className="text-black">
+                  Hey Please Connect befor procceing a head{" "}
+                </Label>
+                <ConnectButton />
+              </div>{" "}
+              {isConnected && (
+                <div className="flex gap-3">
+                  <WorldIDWidget
+                    action="login"
+                    signal="Help us "
+                    active={!isValid || isSubmitting}
+                  />
+                  <Button
+                    disabled={!isValid || isSubmitting}
+                    type="submit"
+                    className="w-[100px]"
+                  >
+                    {loading ? <LoadingDots size={7} /> : "Submit"}
+                  </Button>
+                </div>
+              )}
             </form>
           </Form>
         </div>

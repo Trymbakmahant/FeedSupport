@@ -11,11 +11,14 @@ import {
 import { FeedbackList } from "@/components/Dashboard/FeedbackList";
 import { RecentSupports } from "@/components/Dashboard/RecentSupports";
 import { Button } from "@/components/ui/button";
+import { ConnectButton } from "@rainbow-me/rainbowkit";
+import DashbaordNavbar from "@/components/DashbaordNavbar";
 const page = () => {
   return (
-    <div className="flex w-full h-screen">
+    <div className=" overflow-hidden w-full h-screen">
+      <DashbaordNavbar />
       <ScrollArea className="h-screen w-full rounded-md border">
-        <div className="w-full px-4 py-5 bg-secondary flex justify-between">
+        {/* <div className="w-full px-4 py-5 bg-secondary flex justify-between">
           <div className="flex gap-2 items-center">
             <span
               className={`
@@ -26,14 +29,9 @@ const page = () => {
             </span>
             <span className="text-2xl font-semibold">FeedSupport</span>
           </div>
-          <span
-            className={`
-              w-14 h-14
-              rounded-full text-2xl font-semibold flex items-center duration-300 justify-center bg-green-800`}
-          >
-            U
-          </span>
-        </div>
+
+          <ConnectButton />
+        </div> */}
         <div className="grid w-full h-[320px] grid-cols-3 grid-rows-1 gap-0">
           <div className="col-start-1 pt-5 flex flex-col gap-6  col-span-3 row-start-1 row-span-1 ">
             <Overview />

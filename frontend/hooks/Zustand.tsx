@@ -13,6 +13,7 @@ export const useCount = create<Store>()((set) => ({
 type BussinessInfo = {
   id: string;
   username: string;
+  address: string;
   description: string;
   email: string;
 };
@@ -28,6 +29,7 @@ export const useBusinessInfoStore = create<BusinessInfoState>((set) => ({
     id: "",
     username: "",
     description: "",
+    address: "",
     email: "",
   },
   setBusinessInfo: (info: BussinessInfo) => set({ bussinessInfo: info }),

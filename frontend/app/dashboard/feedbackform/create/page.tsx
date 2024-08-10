@@ -18,18 +18,15 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
 import Rating from "@/components/ui/rating";
 import { FaArrowLeft } from "react-icons/fa6";
-import { title } from "process";
+
 import { Plus, X } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import ProfileUpload from "@/components/ui/profileupload";
+import { useBusinessInfoStore } from "@/hooks/Zustand";
 
 const CreationFormSchema = z.object({
-  tags: z.array(z.string()),
-  // .refine((value) => value.some((item) => item), {
-  //   message: "You have to select at least one item.",
-  // }),
-  title: z.string().min(40, {
-    message: "Title must be at least 40 characters long.",
+  description: z.string().min(40, {
+    message: "description  must be at least 40 characters long.",
   }),
   rating: z.boolean(),
   questions: z.array(z.string()).refine((value) => value.some((item) => item), {
@@ -41,14 +38,22 @@ const CreationFormSchema = z.object({
       message: "Name must be under 30 characters long",
     })
     .min(2, {
-      message: "Title must be at least 2 characters long.",
+      message: "description  must be at least 2 characters long.",
     }),
 });
 
+interface IFormCreation {
+  BussinessName: string;
+  BussinessAddress: string;
+  Questions: string[];
+  Rating: boolean;
+  ProductName: string;
+  Description: string;
+}
 interface IFormInputs {
   tags: string[];
-  title: string;
-  rating: boolean;
+  description: string;
+  rating: boolean; //true means stars  false means emogi
   questions: string[];
   name: string;
 }
@@ -64,16 +69,17 @@ const CreateFeedback = () => {
     resolver: zodResolver(CreationFormSchema),
     defaultValues: {
       tags: [],
-      title: "",
+      description: "",
       rating: true,
       questions: ["give Your feedback"],
       name: "",
     },
   });
 
+  const { bussinessInfo } = useBusinessInfoStore();
   const [formData, setFormData] = useState<IFormInputs>({
     tags: [],
-    title: "",
+    description: "",
     rating: true,
     questions: [],
     name: "",
@@ -84,6 +90,18 @@ const CreateFeedback = () => {
   };
   const handleUpload = (file: string) => {
     console.log("Uploaded file:", file);
+  };
+
+  const handleFormCreation = () => {
+    const data: IFormCreation = {
+      BussinessName: bussinessInfo.username,
+      BussinessAddress: bussinessInfo.address,
+      Questions: formData.questions,
+      Rating: formData.rating,
+      ProductName: formData.name,
+      Description: formData.description,
+    };
+    console.log(data);
   };
 
   return (
@@ -112,51 +130,15 @@ const CreateFeedback = () => {
               <Separator className="bg-gray-400 my-2" />
               <Controller
                 control={control}
-                name="title"
+                name="description"
                 render={({ field }) => (
                   <div className="mb-4 flex-col flex gap-2">
-                    <Label className="text-xl">Title</Label>
-                    <Input {...field} placeholder="Enter Title" />{" "}
+                    <Label className="text-xl">description </Label>
+                    <Input {...field} placeholder="Enter description " />{" "}
                     <span className="text-red-500 text-sm">
-                      {errors.title && <p>{errors.title.message}</p>}
-                    </span>
-                  </div>
-                )}
-              />{" "}
-              <Separator className="bg-gray-400 my-2" />
-              <Controller
-                control={control}
-                name="tags"
-                render={({ field }) => (
-                  <div className="mb-4 flex-col flex gap-3">
-                    <Label className="text-base">Select Media Type</Label>
-                    <div className="flex flex-wrap gap-2">
-                      {/* Example tags, replace with your actual tags */}
-                      {["video", "image"].map((tag) => (
-                        <Button
-                          key={tag}
-                          variant={
-                            field.value.includes(tag) ? "default" : "outline"
-                          }
-                          onClick={() =>
-                            field.onChange(
-                              field.value.includes(tag)
-                                ? field.value.filter((v) => v !== tag)
-                                : [...field.value, tag]
-                            )
-                          }
-                        >
-                          {tag}
-                        </Button>
-                      ))}
-                    </div>{" "}
-                    <span className="text-red-500 text-sm">
-                      {" "}
-                      {errors.tags && <p>{errors.tags.message}</p>}
-                    </span>
-                    <span className="text-gray-400 text-sm">
-                      this allows your feedback giver option to upload image
-                      video if you want in your testimonials
+                      {errors.description && (
+                        <p>{errors.description.message}</p>
+                      )}
                     </span>
                   </div>
                 )}
@@ -174,13 +156,15 @@ const CreateFeedback = () => {
                       />{" "}
                       <Label className="text-base">
                         {field.value
-                          ? "Remove Rating  from your Form"
-                          : "Add Rating to your Form"}
+                          ? "Click this to add emogi 🥳 for rating"
+                          : "Click this to add stars ⭐ for rating"}
                       </Label>
                     </div>
 
                     {errors.rating && <p>{errors.rating.message}</p>}
                     <Rating
+                      size={40}
+                      ratingflag={field.value}
                       initialRating={field.value ? 5 : 0}
                       key={field.value ? 5 : 0}
                     />
@@ -240,6 +224,12 @@ const CreateFeedback = () => {
                 )}
               />
               <Button type="submit">Create Preview</Button>
+              <Button
+                onClick={handleFormCreation}
+                className="bg-blue-400 hover:bg-blue-100"
+              >
+                Create Form
+              </Button>
             </form>
           </div>
         </ScrollArea>
@@ -248,18 +238,17 @@ const CreateFeedback = () => {
         <span className="px-2 text-4xl">Feedback Form Preview</span>
         <ScrollArea className="h-[90vh] rounded-2xl w-[700px]">
           <div className="px-11 py-14 gap-5  flex-col flex rounded-2xl bg-secondary">
-            <div className="flex flex-col gap-2">
+            <div className="flex  h-fit py-4 px-2 rounded-xl  justify-start flex-col gap-2">
               <span className="text-2xl">
                 Give Feedback on{" "}
                 {getValues("name") == "" ? "Product Name" : getValues("name")}
               </span>
               <span className="text-lg text-gray-400">
-                {getValues("title") == ""
-                  ? "Product title"
-                  : getValues("title")}
+                {getValues("description") == ""
+                  ? "Product description "
+                  : getValues("description")}
               </span>
             </div>
-            <Separator className="bg-gray-300" />
             <div className="flex items-center gap-6">
               <div className="flex flex-col w-[120px] gap-1">
                 <ProfileUpload onUpload={handleUpload} />
@@ -283,25 +272,15 @@ const CreateFeedback = () => {
               </div>
             </div>{" "}
             <Separator className="bg-gray-300" />
-            {getValues("rating") && (
-              <div className="flex mb-7 gap-4">
-                <div className=" size-24 border-gray-400 rounded-xl border-2 flex items-center justify-center">
-                  <FaSadCry size={40} />
-                </div>
-                <div className=" size-24 border-gray-400 rounded-xl border-2 flex items-center justify-center">
-                  <ImSad size={40} />
-                </div>
-                <div className=" size-24 border-gray-400 rounded-xl border-2 flex items-center justify-center">
-                  <RiEmotionNormalLine size={40} />
-                </div>
-                <div className=" size-24 border-gray-400 rounded-xl border-2 flex items-center justify-center">
-                  <RiEmotionHappyLine size={40} />
-                </div>
-                <div className=" size-24 border-gray-400 rounded-xl border-2 flex items-center justify-center">
-                  <RiEmotionLaughFill size={40} />
-                </div>
-              </div>
-            )}{" "}
+            <div className="flex flex-col gap-3 items-center justify-center">
+              <span className="text-2xl">Please Rate Us</span>
+              <Rating
+                size={40}
+                ratingflag={formData.rating}
+                initialRating={5}
+                key={5}
+              />
+            </div>
             <Separator className="bg-gray-300" />
             {getValues("questions").map((item, index) => {
               return (
