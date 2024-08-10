@@ -21,6 +21,7 @@ import { FaArrowLeft } from "react-icons/fa6";
 import { title } from "process";
 import { Plus, X } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
+import ProfileUpload from "@/components/ui/profileupload";
 
 const CreationFormSchema = z.object({
   tags: z.array(z.string()),
@@ -80,6 +81,9 @@ const CreateFeedback = () => {
 
   const onSubmit = (data: IFormInputs) => {
     setFormData(data);
+  };
+  const handleUpload = (file: string) => {
+    console.log("Uploaded file:", file);
   };
 
   return (
@@ -255,6 +259,30 @@ const CreateFeedback = () => {
                   : getValues("title")}
               </span>
             </div>
+            <Separator className="bg-gray-300" />
+            <div className="flex items-center gap-6">
+              <div className="flex flex-col w-[120px] gap-1">
+                <ProfileUpload onUpload={handleUpload} />
+                <span className="text-sm"> profile image</span>
+              </div>
+              <div className="w-full flex-col flex gap-3">
+                <div>
+                  {" "}
+                  <Label>Enter Your Name </Label>
+                  <Input placeholder="example: rahul" className="rounded-lg" />
+                </div>
+                <div>
+                  {" "}
+                  <Label>Enter Your Web3 Account address </Label>
+                  <Input
+                    placeholder="example: 0x3FaBd38d0Bd646e8f8A9c431c623B7D22b7f65E9
+ "
+                    className="rounded-lg"
+                  />
+                </div>
+              </div>
+            </div>{" "}
+            <Separator className="bg-gray-300" />
             {getValues("rating") && (
               <div className="flex mb-7 gap-4">
                 <div className=" size-24 border-gray-400 rounded-xl border-2 flex items-center justify-center">
@@ -273,7 +301,8 @@ const CreateFeedback = () => {
                   <RiEmotionLaughFill size={40} />
                 </div>
               </div>
-            )}
+            )}{" "}
+            <Separator className="bg-gray-300" />
             {getValues("questions").map((item, index) => {
               return (
                 <div key={index} className="flex  flex-col gap-2">

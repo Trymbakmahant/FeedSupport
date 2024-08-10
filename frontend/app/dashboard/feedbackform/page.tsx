@@ -7,6 +7,8 @@ import { Separator } from "@/components/ui/separator";
 import { FormList } from "@/components/FeedBackForm/FormsList";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { CarouselDemo } from "@/components/FeedBackForm/FeedbackCarousal";
+import Testimonials from "@/components/Testimonials/TestimonialsCarousal";
+
 const Feedbackform = () => {
   const router = useRouter();
   return (
@@ -27,8 +29,8 @@ const Feedbackform = () => {
       <ScrollArea className="h-[calc(100vh-70px)] w-full">
         <div className="flex mt-4 gap-2 px-3 flex-col items-center">
           <span className="text-xl"> Your Current Testimonial</span>
-          <div className="w-full flex justify-center rounded-2xl h-[400px] bg-secondary">
-            <CarouselDemo />
+          <div className="w-full flex justify-center rounded-2xl h-[600px] bg-secondary">
+            <Testimonials />
           </div>
         </div>
         <Separator className="mt-4" />
