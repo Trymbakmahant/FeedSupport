@@ -13,12 +13,12 @@ export async function POST(request: NextRequest) {
       username: username,
       email: email,
     });
-    // if (Bussiness) {
-    //   return NextResponse.json({
-    //     error: "user already exist",
-    //     status: 409,
-    //   });
-    // }
+    if (Bussiness) {
+      return NextResponse.json({
+        error: "user already exist",
+        status: 409,
+      });
+    }
     const SavedBussiness = new BussinessModel({
       username,
       email,

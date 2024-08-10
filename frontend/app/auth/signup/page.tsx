@@ -37,6 +37,7 @@ const formSchema = z.object({
 
 const Page = () => {
   const { setBusinessInfo, updateBusinessInfo } = useBusinessInfoStore();
+
   const router = useRouter();
   const { loading, error, success, postData } = usePostData();
   const form = useForm<z.infer<typeof formSchema>>({
@@ -46,7 +47,13 @@ const Page = () => {
       description: "",
       email: "",
     },
+    mode: "onChange",
   });
+  const {
+    handleSubmit,
+    control,
+    formState: { errors, isValid, isSubmitting },
+  } = form;
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     const respons: any = await postData("/api/bussinessRegistration", values);
@@ -139,8 +146,16 @@ const Page = () => {
                 )}
               />
               <div className="flex gap-3">
-                <WorldIDWidget />
-                <Button type="submit" className="w-[100px]">
+                <WorldIDWidget
+                  action="login"
+                  signal="Help us "
+                  active={!isValid || isSubmitting}
+                />
+                <Button
+                  disabled={!isValid || isSubmitting}
+                  type="submit"
+                  className="w-[100px]"
+                >
                   {loading ? <LoadingDots size={7} /> : "Submit"}
                 </Button>
               </div>
