@@ -5,24 +5,66 @@ import {
   ISuccessResult,
 } from "@worldcoin/idkit";
 
-import React from "react";
+import React, { useState } from "react";
 import { Button } from "../ui/button";
 import { useWorldcoinVerification } from "@/hooks/useWorldcoinVerification";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { showToast } from "@/helper/toasthelper";
+
+interface WorldIDWidgetProps {
+  active: boolean;
+  action: string;
+
+  setWorldcoinVerified: React.Dispatch<React.SetStateAction<boolean>>;
+}
+interface WorldIDWidgetFofSignupProps {
+  active: boolean;
+  action: string;
+  setProof: React.Dispatch<React.SetStateAction<any>>;
+  setWorldcoinVerified: React.Dispatch<React.SetStateAction<boolean>>;
+}
 
 const WorldIDWidget = ({
   active,
-  signal,
   action,
-}: {
-  active: boolean;
-  signal: string;
-  action: string;
-}) => {
+
+  setWorldcoinVerified,
+}: WorldIDWidgetProps) => {
   const { verify } = useWorldcoinVerification();
   const handleVerify = async (proof: ISuccessResult) => {
-    verify(proof, "logins", "mysignal");
+    try {
+      const response = await fetch("/api/verifyWorldID", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...proof,
+          action,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        showToast("success", <p>Worldcoin Verification Completed </p>);
+        console.log("Verification succeeded:", result.data);
+      } else {
+        showToast(
+          "error",
+          <p>
+            Hey We are getting error when verifying your WorldID please Reado{" "}
+          </p>
+        );
+      }
+    } catch (error) {
+      console.error("An error occurred:", error);
+    }
   };
-  const onSuccess = () => {};
+
+  const onSuccess = () => {
+    setWorldcoinVerified(true);
+  };
   const stingvar = "sdjofsjd";
   return (
     <div className="">
@@ -35,7 +77,142 @@ const WorldIDWidget = ({
       >
         {({ open }) => (
           // This is the button that will open the IDKit modal
-          <Button disabled={active} variant="outline" onClick={open}>
+          <Button
+            disabled={active}
+            variant="outline"
+            className="flex gap-2"
+            onClick={open}
+          >
+            <Avatar className="w-8 h-8">
+              <AvatarImage src={"/worldcoin.png"} alt="worldcoin" />
+              <AvatarFallback>W</AvatarFallback>
+            </Avatar>{" "}
+            Verify with World ID
+          </Button>
+        )}
+      </IDKitWidget>
+    </div>
+  );
+};
+
+export const WorldIDWidgetForSignup = ({
+  active,
+  action,
+  setProof,
+  setWorldcoinVerified,
+}: WorldIDWidgetFofSignupProps) => {
+  const [Verify, setVerify] = useState<boolean>(false);
+  const handleVerify = async (proof: ISuccessResult) => {
+    setProof(proof);
+    try {
+      const response = await fetch("/api/verifyWorldID", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...proof,
+          action,
+        }),
+      });
+
+      const result = await response.json();
+
+      if (result.success) {
+        setVerify(true);
+        showToast("success", <p>Worldcoin Verification Completed </p>);
+        console.log("Verification succeeded:", result.data);
+      } else {
+        showToast(
+          "error",
+          <p>
+            Hey We are getting error when verifying your WorldID please Reado{" "}
+          </p>
+        );
+      }
+    } catch (error) {
+      console.error("An error occurred:", error);
+    }
+  };
+
+  const onSuccess = () => {
+    if (Verify) {
+      setWorldcoinVerified(true);
+    } else {
+      setWorldcoinVerified(false);
+    }
+  };
+  const stingvar = "sdjofsjd";
+  return (
+    <div className="">
+      <IDKitWidget
+        app_id={`app_${process.env.NEXT_PUBLIC_WORLD_ID_API}`} // obtained from the Developer Portal
+        action="logins" // obtained from the Developer Portal
+        onSuccess={onSuccess} // callback when the modal is closed
+        handleVerify={handleVerify} // callback when the proof is received
+        verification_level={VerificationLevel.Orb}
+      >
+        {({ open }) => (
+          // This is the button that will open the IDKit modal
+          <Button
+            disabled={active}
+            variant="outline"
+            className="flex gap-2"
+            onClick={open}
+          >
+            <Avatar className="w-8 h-8">
+              <AvatarImage src={"/worldcoin.png"} alt="worldcoin" />
+              <AvatarFallback>W</AvatarFallback>
+            </Avatar>{" "}
+            Verify with World ID
+          </Button>
+        )}
+      </IDKitWidget>
+    </div>
+  );
+};
+
+export const WorldIDWidgetForLogin = ({
+  active,
+  action,
+  setProof,
+  setWorldcoinVerified,
+}: WorldIDWidgetFofSignupProps) => {
+  const [Verify, setVerify] = useState<boolean>(false);
+  const handleVerify = async (proof: ISuccessResult) => {
+    setProof(proof);
+    setVerify(true);
+  };
+
+  const onSuccess = () => {
+    if (Verify) {
+      setWorldcoinVerified(true);
+    } else {
+      setWorldcoinVerified(false);
+    }
+  };
+
+  return (
+    <div className="">
+      <IDKitWidget
+        app_id={`app_${process.env.NEXT_PUBLIC_WORLD_ID_API}`} // obtained from the Developer Portal
+        action="logins" // obtained from the Developer Portal
+        onSuccess={onSuccess} // callback when the modal is closed
+        handleVerify={handleVerify} // callback when the proof is received
+        verification_level={VerificationLevel.Orb}
+      >
+        {({ open }) => (
+          // This is the button that will open the IDKit modal
+          <Button
+            disabled={active}
+            variant="outline"
+            className="flex gap-2"
+            onClick={open}
+          >
+            <Avatar className="w-8 h-8">
+              <AvatarImage src={"/worldcoin.png"} alt="worldcoin" />
+              <AvatarFallback>W</AvatarFallback>
+            </Avatar>{" "}
             Verify with World ID
           </Button>
         )}

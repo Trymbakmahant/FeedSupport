@@ -1,35 +1,34 @@
-import { connect } from "@/dbConfig/dbConfig";
 import { NextRequest, NextResponse } from "next/server";
+import { connect } from "@/dbConfig/dbConfig";
 import BussinessModel from "@/models/Bussinessmodel";
-import { cookies } from "next/headers";
-connect();
 
+connect();
 export async function POST(request: NextRequest) {
   try {
-    const reqBody = await request.json();
-    const { token } = reqBody;
-    console.log(token);
-
-    const user = await BussinessModel.findOne({
-      verifyToken: token,
-      verifyTokenExpiry: { $gt: Date.now() },
+    const reqBODY = await request.json();
+    console.log(reqBODY);
+    const { address, nulliFireHash, email } = reqBODY;
+    console.log(nulliFireHash);
+    const Bussiness = await BussinessModel.findOne({
+      address: address,
+      email: email,
+      verifyToken: nulliFireHash,
     });
-
-    if (!user) {
-      return NextResponse.json({ error: "Invalid token" }, { status: 400 });
+    if (Bussiness) {
+      return NextResponse.json({
+        status: 200,
+        user: Bussiness,
+      });
     }
-    console.log(user);
-
-    user.isVerfied = true;
-    user.verifyToken = undefined;
-    user.verifyTokenExpiry = undefined;
-    await user.save();
-
-    return NextResponse.json({
-      message: "Email verified successfully",
-      success: true,
-    });
   } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    console.log(error);
+    return NextResponse.json(
+      {
+        error: error.message,
+      },
+      {
+        status: 500,
+      }
+    );
   }
 }

@@ -6,6 +6,16 @@ import {
   RiEmotionLaughFill,
   RiEmotionNormalLine,
 } from "react-icons/ri";
+import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import React, { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -15,7 +25,6 @@ import { Textarea } from "@/components/ui/textarea";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm, Controller } from "react-hook-form";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Button } from "@/components/ui/button";
 import Rating from "@/components/ui/rating";
 import { FaArrowLeft } from "react-icons/fa6";
 
@@ -23,6 +32,9 @@ import { Plus, X } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import ProfileUpload from "@/components/ui/profileupload";
 import { useBusinessInfoStore } from "@/hooks/Zustand";
+import LinkCardModal from "@/components/Dashboard/FeedBackLinkCardModal";
+import LoadingDots from "@/components/ui/loadingDots";
+import { showToast } from "@/helper/toasthelper";
 
 const CreationFormSchema = z.object({
   description: z.string().min(40, {
@@ -64,7 +76,8 @@ const CreateFeedback = () => {
     handleSubmit,
     getValues,
     getFieldState,
-    formState: { errors },
+    formState: { errors, isValid, isSubmitting },
+    reset,
   } = useForm<IFormInputs>({
     resolver: zodResolver(CreationFormSchema),
     defaultValues: {
@@ -75,7 +88,9 @@ const CreateFeedback = () => {
       name: "",
     },
   });
-
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [formId, setFormId] = useState<string>("");
+  const [loading, setLoading] = useState(false);
   const { bussinessInfo } = useBusinessInfoStore();
   const [formData, setFormData] = useState<IFormInputs>({
     tags: [],
@@ -92,8 +107,9 @@ const CreateFeedback = () => {
     console.log("Uploaded file:", file);
   };
 
-  const handleFormCreation = () => {
-    const data: IFormCreation = {
+  const handleFormCreation = async () => {
+    setLoading(true);
+    const FormInfo: IFormCreation = {
       BussinessName: bussinessInfo.username,
       BussinessAddress: bussinessInfo.address,
       Questions: formData.questions,
@@ -101,7 +117,32 @@ const CreateFeedback = () => {
       ProductName: formData.name,
       Description: formData.description,
     };
-    console.log(data);
+
+    try {
+      const response = await fetch("/api/formcreation", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(FormInfo),
+      });
+
+      const data = await response.json();
+
+      console.log(data);
+      if (!response.ok) {
+        throw new Error(data.error || "Something went wrong");
+      }
+      console.log(data);
+      setFormId(data.data._id);
+      setLoading(false);
+      showToast("success", <p>Your form has created Successfully</p>);
+      setIsModalOpen(true);
+      return { success: true, data };
+    } catch (error: any) {
+      setLoading(false);
+      return { success: false, error: error.message };
+    }
   };
 
   return (
@@ -223,12 +264,15 @@ const CreateFeedback = () => {
                   </div>
                 )}
               />
-              <Button type="submit">Create Preview</Button>
+              <Button type="submit">First Create Preview</Button>
               <Button
                 onClick={handleFormCreation}
+                disabled={
+                  !isValid || isSubmitting || formData.questions.length < 0
+                }
                 className="bg-blue-400 hover:bg-blue-100"
               >
-                Create Form
+                {loading ? <LoadingDots size={7} /> : "Submit"}
               </Button>
             </form>
           </div>
@@ -319,10 +363,33 @@ const CreateFeedback = () => {
                 </div>
               </div>
             )}
-            <Button variant="default">Submit</Button>
+            <Button variant="default" disabled={!isValid || isSubmitting}>
+              Submit
+            </Button>
           </div>
         </ScrollArea>
       </div>
+      <LinkCardModal
+        isOpen={isModalOpen}
+        onClose={() => {
+          setFormData({
+            tags: [],
+            description: "",
+            rating: true,
+            questions: [],
+            name: "",
+          });
+          reset({
+            tags: [],
+            description: "",
+            rating: true,
+            questions: ["give Your feedback"],
+            name: "",
+          });
+          setIsModalOpen(false);
+        }}
+        formId={formId}
+      />
     </div>
   );
 };

@@ -7,8 +7,9 @@ connect();
 export async function POST(request: NextRequest) {
   try {
     const reqBODY = await request.json();
-
-    const { username, description, email } = reqBODY;
+    console.log(reqBODY);
+    const { username, description, email, address, nulliFireHash } = reqBODY;
+    console.log(nulliFireHash);
     const Bussiness = await BussinessModel.findOne({
       username: username,
       email: email,
@@ -23,7 +24,10 @@ export async function POST(request: NextRequest) {
       username,
       email,
       description,
+      address,
+      verifyToken: nulliFireHash,
     });
+    console.log("sodfajs", SavedBussiness);
     const SavedUser = await SavedBussiness.save();
 
     // await sendEmail({

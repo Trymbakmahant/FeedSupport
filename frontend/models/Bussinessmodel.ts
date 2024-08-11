@@ -15,7 +15,6 @@ const BussinessSchema = new mongoose.Schema(
     address: {
       type: String,
       require: [true, "plase provide a email "],
-      unique: true,
     },
     description: {
       type: String,

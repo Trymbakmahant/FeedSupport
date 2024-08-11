@@ -13,6 +13,7 @@ import { RecentSupports } from "@/components/Dashboard/RecentSupports";
 import { Button } from "@/components/ui/button";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import DashbaordNavbar from "@/components/DashbaordNavbar";
+import { FeedBackCreationList } from "@/components/Dashboard/FeedBackCreationList";
 const page = () => {
   return (
     <div className=" overflow-hidden w-full h-screen">
@@ -81,26 +82,27 @@ const page = () => {
             </div>
           </div>
           <Separator orientation="vertical" className=" bg-primary" />
-          <div className=" w-[66%] flex flex-col gap-4 items-center my-3   ">
+          <div className=" w-[46%] flex flex-col gap-4 items-center my-3   ">
             <Button
               variant="link"
               className="text-3xl flex  duration-500 hover:translate-x-3 transition gap-2 items-center  font-bold "
             >
-              Recent Feedbacks <CircleArrowOutUpRight />{" "}
+              Your Feedback Forms
+              <CircleArrowOutUpRight />{" "}
             </Button>
             <Separator className=" bg-primary" />
-            <FeedbackList />
+            <FeedBackCreationList />
           </div>
           <Separator orientation="vertical" className=" bg-primary" />
-          <div className="flex flex-col gap-4 items-center my-3  ">
+          <div className="flex w-full max-w-[600px] flex-col gap-4 items-center my-3  ">
             <Button
               variant="link"
               className="text-3xl flex gap-2 duration-500 hover:translate-x-3 transition items-center font-bold "
             >
-              Recent Donation <CircleArrowOutUpRight />
-            </Button>{" "}
+              Recived Feedbacks <CircleArrowOutUpRight />
+            </Button>
             <Separator className=" bg-primary" />
-            <RecentSupports />
+            <FeedbackList />
           </div>
         </div>
       </ScrollArea>

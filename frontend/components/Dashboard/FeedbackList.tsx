@@ -1,3 +1,4 @@
+"use client";
 import {
   Table,
   TableBody,
@@ -8,7 +9,9 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import useFetchForms from "@/hooks/useFetchCreatedForms";
 import { spawn } from "child_process";
+import { useState } from "react";
 
 const Products = [
   {
@@ -56,6 +59,8 @@ const Products = [
 ];
 
 export function FeedbackList() {
+  const [search, setSearch] = useState<string>("");
+  const { forms, loading, error } = useFetchForms(search);
   return (
     <Table>
       <TableCaption>A list of your recent Feedback</TableCaption>

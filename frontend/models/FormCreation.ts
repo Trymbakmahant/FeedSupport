@@ -1,36 +1,38 @@
 import mongoose from "mongoose";
 
-const FormCreationSchema = new mongoose.Schema({
-  BussinessName: {
-    type: String,
-    require: [true, "plase provide a username "],
-    unique: true,
-  },
-  BussinessAddress: {
-    type: String,
-    require: [true, "plase provide a address "],
-    unique: true,
-  },
-  Questions: {
-    type: [String],
-    require: [true, "plase provide a quetion "],
-  },
+const FormCreationSchema = new mongoose.Schema(
+  {
+    BussinessName: {
+      type: String,
+      require: [true, "plase provide a username "],
+    },
+    BussinessAddress: {
+      type: String,
+      require: [true, "plase provide a address "],
+    },
+    Questions: {
+      type: [String],
+      require: [true, "plase provide a quetion "],
+    },
 
-  Rating: {
-    type: String,
-    require: [true, "plase provide a pfp "],
+    Rating: {
+      type: Boolean,
+      require: [true, "plase provide a pfp "],
+    },
+    ProductName: {
+      type: String,
+      require: [true, "plase provide a ProductName "],
+      unique: true,
+    },
+    Description: {
+      type: String,
+      require: [true, "plase provide a Description "],
+    },
   },
-  ProductName: {
-    type: String,
-    require: [true, "plase provide a ProductName "],
-    unique: true,
-  },
-  Description: {
-    type: String,
-    require: [true, "plase provide a Description "],
-    unique: true,
-  },
-});
+  {
+    timestamps: true,
+  }
+);
 
 const FormCreationModel =
   mongoose.models.FormCreation ||

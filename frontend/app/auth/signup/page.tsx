@@ -17,8 +17,10 @@ import {
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
 import SignupImage from "@/public/Singpsecond.svg";
-import React from "react";
-import WorldIDWidget from "@/components/Worldcoin/WorldIDWidget";
+import React, { useEffect, useState } from "react";
+import WorldIDWidget, {
+  WorldIDWidgetForSignup,
+} from "@/components/Worldcoin/WorldIDWidget";
 import { Textarea } from "@/components/ui/textarea";
 import { usePostData } from "@/hooks/usePostData";
 import LoadingDots from "@/components/ui/loadingDots";
@@ -27,6 +29,7 @@ import { useBusinessInfoStore } from "@/hooks/Zustand";
 import { useAccount } from "wagmi";
 import { ConnectButton } from "@rainbow-me/rainbowkit";
 import { Label } from "@radix-ui/react-label";
+import { useWorldCoinStore } from "@/hooks/WorldCoinVerify";
 
 const formSchema = z.object({
   username: z.string().min(2, {
@@ -36,6 +39,7 @@ const formSchema = z.object({
     message: "Description must be at least 100 characters.",
   }),
   email: z.string().email({ message: "invalid email address" }),
+  nulliFireHash: z.string(),
   address: z
     .string()
     .min(42, { message: "invalid wallet address" })
@@ -44,7 +48,11 @@ const formSchema = z.object({
 
 const Page = () => {
   const { setBusinessInfo, updateBusinessInfo } = useBusinessInfoStore();
+  const [proof, setProof] = useState<any>();
   const { isConnected, address } = useAccount();
+  const [WorldcoinVerification, setWorldcoinVerification] =
+    useState<boolean>(false);
+
   const router = useRouter();
   const { loading, error, success, postData } = usePostData();
   const form = useForm<z.infer<typeof formSchema>>({
@@ -53,20 +61,38 @@ const Page = () => {
       username: "",
       description: "",
       email: "",
-      address: address!,
+      address: "",
+      nulliFireHash: "",
     },
     mode: "onChange",
   });
+
+  useEffect(() => {
+    if (address) {
+      setValue("address", address);
+    }
+  }, [address]);
+
+  useEffect(() => {
+    if (WorldcoinVerification) {
+      setValue("nulliFireHash", proof.nullifier_hash);
+    }
+  }, [WorldcoinVerification]);
   const {
     handleSubmit,
     control,
+    setValue,
     formState: { errors, isValid, isSubmitting },
   } = form;
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    if (!WorldcoinVerification) {
+      return;
+    }
+    console.log(values);
     const respons: any = await postData("/api/bussinessRegistration", values);
     console.log(respons);
-    if (respons.status == 200) {
+    if (respons?.status == 200) {
       console.log(respons);
       updateBusinessInfo({
         username: respons.user.username,
@@ -80,6 +106,13 @@ const Page = () => {
     } else {
       showToast("error", <p> {respons.error} </p>);
     }
+  }
+  if (success) {
+    return (
+      <div className="flex justify-center items-center">
+        Hey We have send you email verification link please check it
+      </div>
+    );
   }
   return (
     <div className="flex justify-between h-screen overflow-hidden ">
@@ -162,14 +195,20 @@ const Page = () => {
               </div>{" "}
               {isConnected && (
                 <div className="flex gap-3">
-                  <WorldIDWidget
-                    action="login"
-                    signal="Help us "
+                  <WorldIDWidgetForSignup
+                    setProof={setProof}
+                    action="signup"
+                    setWorldcoinVerified={setWorldcoinVerification}
                     active={!isValid || isSubmitting}
                   />
                   <Button
-                    disabled={!isValid || isSubmitting}
+                    disabled={
+                      !isValid || isSubmitting || !WorldcoinVerification
+                    }
                     type="submit"
+                    // onClick={() => {
+                    //   console.log(form);
+                    // }}
                     className="w-[100px]"
                   >
                     {loading ? <LoadingDots size={7} /> : "Submit"}

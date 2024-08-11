@@ -13,20 +13,19 @@ export async function POST(req: NextRequest) {
       BussinessName,
       BussinessAddress,
       Questions,
-
-      media,
+      ProductName,
+      Description,
       Rating,
-      RatingValue,
-    }: IFormCreation = body;
+    } = body;
 
     const newForm = new FormCreationModel({
       BussinessName,
       BussinessAddress,
       Questions,
+      ProductName,
+      Description,
 
-      media,
       Rating,
-      RatingValue,
     });
 
     console.log(newForm);

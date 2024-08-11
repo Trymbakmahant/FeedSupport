@@ -1,35 +1,33 @@
-import { connect } from "@/dbConfig/dbConfig";
 import { NextRequest, NextResponse } from "next/server";
-import BussinessModel from "@/models/Bussinessmodel";
-import { cookies } from "next/headers";
-connect();
+import axios from "axios";
 
-export async function POST(request: NextRequest) {
+export async function POST(req: NextRequest) {
   try {
-    const reqBody = await request.json();
-    const { token } = reqBody;
-    console.log(token);
+    const data = await req.json(); // Use req.json() to parse the body
 
-    const user = await BussinessModel.findOne({
-      verifyToken: token,
-      verifyTokenExpiry: { $gt: Date.now() },
+    const apiUrl = `https://developer.worldcoin.org/api/v2/verify/app_${process.env.NEXT_PUBLIC_WORLD_ID_API}`;
+    console.log(apiUrl);
+    console.log(data);
+
+    const response = await axios.post(apiUrl, data, {
+      headers: {
+        "Content-Type": "application/json",
+      },
     });
 
-    if (!user) {
-      return NextResponse.json({ error: "Invalid token" }, { status: 400 });
+    if (response.status !== 200) {
+      throw new Error("Verification failed");
     }
-    console.log(user);
 
-    user.isVerfied = true;
-    user.verifyToken = undefined;
-    user.verifyTokenExpiry = undefined;
-    await user.save();
-
-    return NextResponse.json({
-      message: "Email verified successfully",
-      success: true,
-    });
-  } catch (error: any) {
-    return NextResponse.json({ error: error.message }, { status: 500 });
+    return NextResponse.json({ success: true, data: response.data });
+  } catch (err: any) {
+    console.log(err.response.data);
+    return NextResponse.json(
+      {
+        success: false,
+        error: err.response.data,
+      },
+      { status: 500 }
+    );
   }
 }
