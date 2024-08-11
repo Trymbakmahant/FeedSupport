@@ -23,7 +23,7 @@ export default function Home() {
               onClick={() => {
                 router.push("/auth/signup");
               }}
-              className="px-6 py-3 bg-white text-green-600 rounded-md"
+              className="px-6 z-50 py-3 bg-white text-green-600 rounded-md"
             >
               Get Started
             </Button>

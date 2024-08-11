@@ -150,6 +150,7 @@ const Navbar: React.FC = () => {
               <path d="M11 21L23 21" stroke="#FAFAFA" strokeWidth="2"></path>
               <path d="M11 28L31 28" stroke="#FAFAFA" strokeWidth="2"></path>
             </svg>
+            <span className="text-[11px]">MENU</span>
           </button>{" "}
           <ConnectButton />
           <ThemeToggle />
