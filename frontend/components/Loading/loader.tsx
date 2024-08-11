@@ -1,4 +1,4 @@
-import styles from "./HamsterWheel.module.css";
+import styles from "./hamsterwheel.module.css";
 
 const HamsterWheel = () => {
   return (
