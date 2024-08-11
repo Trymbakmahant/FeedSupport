@@ -19,7 +19,7 @@ interface FetchFormResponse {
 }
 
 export const useFetchForm = (id: string) => {
-  const [form, setForm] = useState<FormData | null>(null);
+  const [form, setForm] = useState<any | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -28,7 +28,7 @@ export const useFetchForm = (id: string) => {
       setLoading(true);
       try {
         const response = await fetch(`/api/formcreation/${id}`);
-        const result: FetchFormResponse = await response.json();
+        const result: any = await response.json();
 
         if (result.success) {
           setForm(result.data || null);

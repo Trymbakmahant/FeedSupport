@@ -104,7 +104,7 @@ const Page = () => {
       showToast("success", <p> Registration Completed </p>);
       router.push("/dashboard");
     } else {
-      showToast("error", <p> {respons.error} </p>);
+      showToast("error", <p>please use diffrent email or user name </p>);
     }
   }
   if (success) {

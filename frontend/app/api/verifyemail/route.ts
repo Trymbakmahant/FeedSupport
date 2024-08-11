@@ -12,14 +12,26 @@ export async function POST(request: NextRequest) {
     const Bussiness = await BussinessModel.findOne({
       address: address,
       email: email,
-      verifyToken: nulliFireHash,
     });
+    console.log(Bussiness);
+    const updatedBussienss = await BussinessModel.findByIdAndUpdate(
+      Bussiness._id,
+      {
+        verifyToken: nulliFireHash,
+      }
+    );
     if (Bussiness) {
       return NextResponse.json({
         status: 200,
-        user: Bussiness,
+        user: updatedBussienss,
+        ok: true,
       });
     }
+    return NextResponse.json({
+      ok: false,
+      status: 200,
+      message: "you don't have any account please signup",
+    });
   } catch (error: any) {
     console.log(error);
     return NextResponse.json(

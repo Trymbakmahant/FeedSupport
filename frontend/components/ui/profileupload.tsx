@@ -63,6 +63,8 @@ const ProfileUpload: React.FC<ProfileUploadProps> = ({ onUpload }) => {
       {imageSrc ? (
         <Image
           src={imageSrc}
+          width={40}
+          height={40}
           alt="Profile"
           className="w-full h-full object-cover"
         />

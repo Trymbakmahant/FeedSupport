@@ -68,9 +68,9 @@ const CardFlip = ({
           variant="link"
           className="h-4"
           onClick={() => {
-            setDetailFlag((prev) => {
-              return !prev;
-            });
+            window.open(
+              "https://optimism-sepolia.easscan.org/attestation/view/0xc7e5777cfffe5c1dd692d7d2cc160fe67b3ceeb80b2b720dde62ce6e7b0748fa"
+            );
           }}
         >
           View Proof

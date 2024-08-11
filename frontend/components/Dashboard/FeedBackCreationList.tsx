@@ -13,6 +13,7 @@ import useFetchForms from "@/hooks/useFetchCreatedForms";
 import { spawn } from "child_process";
 import { useState } from "react";
 import { Button } from "../ui/button";
+import CopyButton from "../IFrameButton/IframeCopyButton";
 
 export function FeedBackCreationList() {
   const [search, setSearch] = useState<string>("");
@@ -29,7 +30,7 @@ export function FeedBackCreationList() {
     );
   }
   return (
-    <Table>
+    <Table className="min-w-[700px]">
       <TableCaption>A list of your Created FeedBack Form</TableCaption>
       <TableHeader>
         <TableRow>
@@ -51,6 +52,9 @@ export function FeedBackCreationList() {
                 {Product.Questions.length}{" "}
               </TableCell>
               <TableCell className="text-right">{Product.createdAt}</TableCell>
+              <TableCell>
+                <CopyButton textToCopy='<iframe src="http://localhost:3000/testimonials" frameborder="0" allowfullscreen></iframe>' />
+              </TableCell>
             </TableRow>
           ))}
       </TableBody>

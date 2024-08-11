@@ -118,6 +118,11 @@ const CreateFeedback = () => {
       Description: formData.description,
     };
 
+    if (formData.name.length == 0) {
+      showToast("error", <p>Please enter Product Name </p>);
+      return;
+    }
+    await createAction(formData.name);
     try {
       const response = await fetch("/api/formcreation", {
         method: "POST",
@@ -143,6 +148,28 @@ const CreateFeedback = () => {
       setLoading(false);
       return { success: false, error: error.message };
     }
+  };
+
+  const createAction = async (action: string) => {
+    const response = await fetch("/api/worldidactioncreater", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ action: action }),
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+      setLoading(false);
+      showToast("error", <p>{`don't `}use same product name</p>);
+    } else {
+      showToast(
+        "success",
+        <p>Worldcoin Action for your product has been created</p>
+      );
+    }
+    return data;
   };
 
   return (

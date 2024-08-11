@@ -82,7 +82,7 @@ const page = () => {
             </div>
           </div>
           <Separator orientation="vertical" className=" bg-primary" />
-          <div className=" w-[46%] flex flex-col gap-4 items-center my-3   ">
+          <div className=" w-[56%] flex flex-col gap-4 items-center my-3   ">
             <Button
               variant="link"
               className="text-3xl flex  duration-500 hover:translate-x-3 transition gap-2 items-center  font-bold "

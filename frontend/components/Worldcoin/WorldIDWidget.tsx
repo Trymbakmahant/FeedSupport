@@ -70,7 +70,7 @@ const WorldIDWidget = ({
     <div className="">
       <IDKitWidget
         app_id={`app_${process.env.NEXT_PUBLIC_WORLD_ID_API}`} // obtained from the Developer Portal
-        action="logins" // obtained from the Developer Portal
+        action={action} // obtained from the Developer Portal
         onSuccess={onSuccess} // callback when the modal is closed
         handleVerify={handleVerify} // callback when the proof is received
         verification_level={VerificationLevel.Orb}
@@ -78,9 +78,8 @@ const WorldIDWidget = ({
         {({ open }) => (
           // This is the button that will open the IDKit modal
           <Button
-            disabled={active}
             variant="outline"
-            className="flex gap-2"
+            className="flex w-full h-11 gap-2"
             onClick={open}
           >
             <Avatar className="w-8 h-8">
@@ -147,7 +146,7 @@ export const WorldIDWidgetForSignup = ({
     <div className="">
       <IDKitWidget
         app_id={`app_${process.env.NEXT_PUBLIC_WORLD_ID_API}`} // obtained from the Developer Portal
-        action="logins" // obtained from the Developer Portal
+        action={action} // obtained from the Developer Portal
         onSuccess={onSuccess} // callback when the modal is closed
         handleVerify={handleVerify} // callback when the proof is received
         verification_level={VerificationLevel.Orb}
@@ -196,7 +195,7 @@ export const WorldIDWidgetForLogin = ({
     <div className="">
       <IDKitWidget
         app_id={`app_${process.env.NEXT_PUBLIC_WORLD_ID_API}`} // obtained from the Developer Portal
-        action="logins" // obtained from the Developer Portal
+        action={action} // obtained from the Developer Portal
         onSuccess={onSuccess} // callback when the modal is closed
         handleVerify={handleVerify} // callback when the proof is received
         verification_level={VerificationLevel.Orb}

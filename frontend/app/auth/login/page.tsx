@@ -93,7 +93,11 @@ const Page = () => {
       showToast("success", <p> Login Completed </p>);
       router.push("/dashboard");
     } else {
-      showToast("error", <p> {respons.error} </p>);
+      showToast(
+        "error",
+        <p> Your {`don't `} have any account Please Signup</p>
+      );
+      router.push("/auth/signup");
     }
   }
   if (success) {
@@ -171,6 +175,9 @@ const Page = () => {
           </Form>
         </div>
       </div>
+      <Button variant="link" className="fixed text-xl text-black top-6 right-4">
+        Sign Up
+      </Button>
     </div>
   );
 };

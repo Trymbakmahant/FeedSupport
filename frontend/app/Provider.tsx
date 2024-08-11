@@ -9,13 +9,13 @@ import {
   RainbowKitProvider,
 } from "@rainbow-me/rainbowkit";
 import { WagmiProvider } from "wagmi";
-import { mainnet, polygon, optimism, arbitrum, base } from "wagmi/chains";
+import { optimismSepolia } from "wagmi/chains";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 
 const config = getDefaultConfig({
   appName: "FeedSupport",
   projectId: process.env.NEXT_PUBLIC_WalletConnect_Project_ID!,
-  chains: [mainnet, polygon, optimism, arbitrum, base],
+  chains: [optimismSepolia],
   ssr: true, // If your dApp uses server side rendering (SSR)
 });
 interface ProviderProps {
