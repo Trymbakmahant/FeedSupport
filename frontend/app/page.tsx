@@ -6,6 +6,7 @@ import Image from "next/image";
 import { FaCheckCircle, FaEthereum } from "react-icons/fa";
 import { FaGlobe } from "react-icons/fa";
 import { useRouter } from "next/navigation";
+import GameBox from "@/components/Sipline/GameBox";
 export default function Home() {
   const router = useRouter();
   return (
@@ -13,7 +14,8 @@ export default function Home() {
       <Navbar />
       <div className="min-h-screen w-full bg-gray-100">
         {/* Hero Section */}
-        <header className="bg-green-600 text-white py-20">
+        <header className="bg-green-600  relative flex justify-end h-screen text-white py-20">
+          <GameBox />
           <div className="container mx-auto text-center">
             <h1 className="text-5xl font-bold mb-4">Feedsupport</h1>
             <p className="text-xl mb-8">Authentic Feedback, Verified Trust.</p>

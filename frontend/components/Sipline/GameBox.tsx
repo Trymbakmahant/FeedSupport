@@ -2,7 +2,7 @@ import Spline from "@splinetool/react-spline";
 
 export default function GameBox() {
   return (
-    <main className="h-screen bg-blue-200 w-[50vw]">
+    <main className="h-screen bg-transparent absolute top-0 left-0">
       <Spline
         onLoad={() => {
           console.log("hello");
